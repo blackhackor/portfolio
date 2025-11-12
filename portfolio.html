@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tirth Panawala - Cybersecurity Portfolio</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Load PNG Generation Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <!-- --- STYLES FOR PORTFOLIO --- -->
+    <style>
+        /* Define Theme Variables */
+        :root {
+            --primary-color: #00BFFF; /* Electric Blue */
+            --secondary-color: #2D3748; /* Dark Gray for secondary elements */
+            --bg-color: #0D1117; /* Very Dark Background */
+            --card-bg: #161B22; /* Slightly Lighter Card Background */
+            --text-color: #FFFFFF;
+        }
+
+        /* Load clean, readable tech font */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Fira+Code:wght@300..700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* --- Custom Professional Styles --- */
+
+        .terminal-code {
+            font-family: 'Fira Code', monospace;
+            color: var(--primary-color);
+        }
+
+        .section-header-underline {
+            display: inline-block;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 4px;
+        }
+
+        /* Button Styling - Clean and Solid */
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: var(--bg-color);
+            transition: background-color 0.3s, transform 0.3s;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+        }
+        .btn-primary:hover {
+            background-color: #00A9E6; /* Slightly darker blue on hover */
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 191, 255, 0.3); /* Adjusted shadow color */
+        }
+
+        /* Card Styling - Sharp, Defined Borders */
+        .professional-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--secondary-color);
+            border-left: 4px solid var(--primary-color); /* Highlight bar */
+            transition: all 0.3s ease;
+        }
+        .professional-card:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 8px 15px rgba(0, 191, 255, 0.1);
+            transform: translateY(-2px);
+        }
+        .professional-card ul li {
+            position: relative;
+            padding-left: 1rem;
+        }
+        .professional-card ul li::before {
+            content: "\2022"; /* Bullet point */
+            color: var(--primary-color);
+            font-weight: bold;
+            display: inline-block;
+            width: 1em;
+            margin-left: -1em;
+        }
+
+
+        /* --- Subtle Animation Classes (On-Scroll) --- */
+        .anim-fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .anim-fade-in.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+    
+    <!-- --- STYLES FOR PRINTABLE A4 RESUME --- -->
+    <style>
+        /* These styles are scoped to the #resume-view div */
+        /* A4 Page Styling */
+        @page {
+            size: A4;
+            margin: 0;
+        }
+        
+        /* Hide the resume view by default */
+        #resume-view {
+            display: none;
+            /* We need to override the portfolio's body background */
+            background-color: #e9edf2;
+            color: #222;
+            font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        /* Container for the sticky buttons on resume view */
+        #resume-controls {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1001;
+            display: flex;
+            gap: 10px;
+        }
+
+        /* Style for buttons in resume view */
+        #resume-controls button {
+            /* Using btn-primary styles, but adapted for this view */
+            background-color: var(--primary-color);
+            color: var(--bg-color);
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+        #resume-controls button:hover {
+            background-color: #00A9E6;
+        }
+        #resume-controls button:disabled {
+            background-color: var(--secondary-color);
+            cursor: not-allowed;
+        }
+
+
+        #resume-view * {
+            box-sizing: border-box;
+        }
+        
+        #resume-view .page {
+            width: 210mm;
+            min-height: 297mm;
+            height: auto;
+            margin: 20px auto;
+            background: #fff;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            padding: 40px 50px; /* Generous padding */
+        }
+
+        /* --- Header --- */
+        #resume-view .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        #resume-view .header h1 {
+            font-size: 3em; /* Large name */
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin: 0;
+            color: #111;
+        }
+        #resume-view .header h2 {
+            font-size: 1.5em; /* Subtitle */
+            font-weight: 400;
+            color: #333;
+            margin: 10px 0;
+        }
+        #resume-view .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 25px; /* Space between items */
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        #resume-view .contact-info p {
+            margin: 0;
+            font-size: 0.95em;
+            color: #444;
+        }
+        #resume-view .contact-info a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        #resume-view .contact-info a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Horizontal Rule */
+        #resume-view hr {
+            border: 0;
+            border-top: 2px solid #e0e0e0;
+            margin: 25px 0;
+        }
+
+        /* --- Section Base --- */
+        #resume-view section {
+            margin-bottom: 25px;
+        }
+        /* Section Titles (ABOUT ME, EDUCATION...) */
+        #resume-view section h3 {
+            font-size: 1.4em;
+            font-weight: 700;
+            color: #111;
+            border-bottom: 2px solid #333;
+            padding-bottom: 5px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        /* --- About Me --- */
+        #resume-view .about-me p {
+            line-height: 1.6;
+            font-size: 0.95em;
+            color: #333;
+        }
+
+        /* --- Shared Row Layout (Edu, Exp, Certs) --- */
+        #resume-view .section-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        #resume-view .section-list li {
+            display: flex;
+            margin-bottom: 20px;
+            gap: 20px;
+        }
+        #resume-view .item-left {
+            flex-basis: 150px; /* Fixed width for dates/location */
+            flex-shrink: 0;
+        }
+        #resume-view .item-left h4 { /* Dates */
+            font-size: 0.95em;
+            font-weight: 700;
+            margin: 0 0 5px 0;
+            color: #111;
+        }
+        #resume-view .item-left p { /* Location / Issuer */
+            font-size: 0.95em;
+            margin: 0;
+            color: #444;
+        }
+        #resume-view .item-right {
+            flex-grow: 1;
+        }
+        #resume-view .item-right h4 { /* Degree / Job Title */
+            font-size: 1.05em;
+            font-weight: 700;
+            margin: 0 0 5px 0;
+            color: #111;
+        }
+        #resume-view .item-right h5 { /* School / Company */
+            font-size: 1em;
+            font-weight: 400;
+            font-style: italic;
+            margin: 0 0 8px 0;
+            color: #333;
+        }
+        #resume-view .item-right p { /* Description */
+            margin: 0;
+            font-size: 0.95em;
+            line-height: 1.5;
+            color: #333;
+        }
+        
+        /* --- Projects --- */
+        #resume-view .project-columns {
+            display: flex;
+            gap: 30px;
+        }
+        #resume-view .project-item {
+            width: 50%;
+        }
+        #resume-view .project-item h4 {
+            font-size: 1.05em;
+            font-weight: 700;
+            margin: 0 0 5px 0;
+            color: #111;
+        }
+        #resume-view .project-item p {
+            margin: 0;
+            font-size: 0.95em;
+            line-height: 1.5;
+            color: #333;
+        }
+
+        /* --- Skills & Tools --- */
+        #resume-view .multi-column-list {
+            list-style: disc;
+            padding-left: 20px;
+            font-size: 0.95em;
+            columns: 2; /* Creates two columns */
+            -webkit-columns: 2;
+            -moz-columns: 2;
+        }
+        #resume-view .multi-column-list li {
+            margin-bottom: 8px;
+        }
+
+        /* --- Languages --- */
+        #resume-view .languages ul {
+            list-style: none;
+            padding-left: 0;
+            display: flex;
+            gap: 30px;
+            font-size: 0.95em;
+        }
+        
+        /* --- Certificates (variant layout) --- */
+        #resume-view .certificates-list li {
+            /* Same as .section-list li */
+            display: flex;
+            margin-bottom: 15px; /* Tighter spacing */
+            gap: 20px;
+        }
+        #resume-view .certificates-list .item-left {
+            flex-basis: 80px; /* Shorter date width */
+        }
+        #resume-view .certificates-list .item-right h4 {
+            font-size: 1em; /* Slightly smaller */
+        }
+
+        /* Responsive Design */
+        @media (max-width: 210mm) {
+            #resume-view .page {
+                width: 100%;
+                margin: 0;
+                padding: 20px;
+                box-shadow: none;
+            }
+            #resume-view .header h1 {
+                font-size: 2.5em;
+            }
+            #resume-view .header h2 {
+                font-size: 1.2em;
+            }
+            #resume-view .contact-info {
+                flex-direction: column;
+                gap: 8px;
+                align-items: center;
+            }
+            #resume-view .section-list li {
+                flex-direction: column;
+                gap: 5px;
+            }
+            #resume-view .item-left {
+                flex-basis: auto; /* Stack date/location */
+            }
+            #resume-view .project-columns {
+                flex-direction: column;
+            }
+            #resume-view .project-item {
+                width: 100%;
+            }
+            #resume-view .multi-column-list {
+                columns: 1;
+                -webkit-columns: 1;
+                -moz-columns: 1;
+            }
+            #resume-view .languages ul {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': 'var(--primary-color)',
+                        'secondary': 'var(--secondary-color)',
+                        'bg-main': 'var(--bg-color)',
+                        'card-bg': 'var(--card-bg)',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="pt-20">
+
+    <!-- This div contains the main portfolio site -->
+    <div id="portfolio-view">
+        <!-- Header & Navigation -->
+        <header class="fixed top-0 left-0 w-full bg-bg-main/95 backdrop-blur-sm z-50 shadow-lg shadow-black/50">
+            <nav class="max-w-7xl mx-auto flex justify-between items-center px-6 py-4">
+                <a href="#home" class="text-2xl font-extrabold text-white tracking-wider">
+                    Tirth<span class="text-primary">_Panawala</span>
+                </a>
+                <div class="hidden md:flex space-x-8 text-sm font-medium">
+                    <a href="#about" class="text-white hover:text-primary transition duration-200">About</a>
+                    <a href="#expertise" class="text-white hover:text-primary transition duration-200">Expertise</a>
+                    <a href="#certifications" class="text-white hover:text-primary transition duration-200">Certifications</a>
+                    <a href="#projects" class="text-white hover:text-primary transition duration-200">Projects</a>
+                    <a href="#contact" class="text-white hover:text-primary transition duration-200">Contact</a>
+                </div>
+                <!-- Mobile Menu Placeholder -->
+                <button id="menu-button" class="md:hidden text-white p-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-menu"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+                </button>
+            </nav>
+        </header>
+
+        <main class="max-w-7xl mx-auto px-6">
+            
+            <!-- Hero Section -->
+            <section id="home" class="min-h-[80vh] flex items-center pt-10 pb-20">
+                <div class="lg:w-3/4 space-y-6 anim-fade-in" data-delay="0.1">
+                    <p class="text-xl text-primary terminal-code tracking-wider">
+                        $ ./data is money, --keep it safe like you would keep_money_safe.
+                    </p>
+                    <h1 class="text-5xl md:text-7xl font-extrabold leading-tight text-white">
+                        Tirth Panawala: <span class="text-primary">Cyber Security Analyst</span>
+                    </h1>
+                    <p class="text-xl text-gray-400 max-w-3xl">
+                        Motivated Master’s student with SOC experience in live threat monitoring, IP blocking, and incident response using Wazuh SIEM. Skilled in digital forensics, phishing mitigation, and offline analysis with OSForensics, Autopsy, and Volatility.
+                    </p>
+                    <div class="flex space-x-4 pt-4">
+                        <a href="#contact" class="btn-primary px-8 py-3 rounded-md">
+                            Secure Connection
+                        </a>
+                        <a href="#projects" class="px-8 py-3 rounded-md border border-primary text-primary hover:bg-primary/20 transition duration-300">
+                            View Projects
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- About Section -->
+            <section id="about" class="py-20 border-t border-secondary">
+                <h2 class="text-4xl font-bold mb-12 text-white anim-fade-in section-header-underline">
+                    About Me
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-10 anim-fade-in" data-delay="0.3">
+                    <!-- Bio Text -->
+                    <div class="md:col-span-2 space-y-6 text-lg text-gray-300">
+                        <p>
+                            With hands-on SOC experience in live threat monitoring, IP blocking, and incident response via Wazuh SIEM, my focus is on automating and streamlining security operations. My workflows leverage tools like Splunk and native OS utilities to maintain operational hygiene and accelerate response.
+                        </p>
+                        <p>
+                            I specialize in digital forensics and offline threat analysis using OSForensics, Autopsy, and Volatility, enabling deep investigation of artifacts and memory dumps. My approach blends proactive threat hunting with reactive teardown routines—ensuring traceability, precision, and compliance across diverse environments.
+                        </p>
+                            <p>
+                            My commitment to clean, resilient security is reflected in two Android-based SOC tools I developed: Cyber Rakshak, designed for mobile threat monitoring, and Rakshak Logs, built to streamline log collection and analysis for SOC operations.
+                        </p>
+                    </div>
+                    
+                    <!-- Contact Mini-Card -->
+                    <div class="professional-card p-6 space-y-3">
+                        <h3 class="text-xl font-semibold text-primary mb-2">Key Info</h3>
+                        <div class="flex items-center space-x-3 text-gray-400">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mail text-primary"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                            <a href="mailto:blackhackor20@gmail.com" class="hover:text-white transition">blackhackor20@gmail.com</a>
+                        </div>
+                        <div class="flex items-center space-x-3 text-gray-400">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-map-pin text-primary"><path d="M12 10a7 7 0 1 0 0 14h0a7 7 0 0 0 0-14z"/><path d="M12 2a10 10 0 0 0-10 10c0 4.42 2.76 8.5 7 9.87V22h6v-0.13c4.24-1.37 7-5.45 7-9.87A10 10 0 0 0 12 2z"/></svg>
+                            <span class="hover:text-white transition">Ahmedabad, IND</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Expertise Section - CATEGORIZED MATRIX -->
+            <section id="expertise" class="py-20 border-t border-secondary">
+                <h2 class="text-4xl font-bold mb-12 text-white anim-fade-in section-header-underline">
+                    Technical Expertise
+                </h2>
+
+                <!-- Grid for the 5 Skill Categories (3 columns on large screen, 2 on medium, 1 on small) -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                    <!-- 1. SOC & SIEM Operations -->
+                    <div class="professional-card p-6 space-y-4 anim-fade-in" data-delay="0.1">
+                        <div class="flex items-center space-x-3 text-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shield-check"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><path d="m9 12 2 2 4-4"/></svg>
+                            <h3 class="text-xl font-bold">SOC & SIEM Operations</h3>
+                        </div>
+                        <ul class="list-none space-y-2 text-sm text-gray-300">
+                            <li><span class="text-primary font-bold">Wazuh</span> (Configuration & Monitoring)</li>
+                            <li><span class="text-primary font-bold">Splunk</span> (Analyze Logs)</li>
+                            <li>SOC Monitoring & Configurations</li>
+                            <li>Incident Management [SIEM]</li>
+                            <li>Event Management / Log Aggregation</li>
+                        </ul>
+                    </div>
+
+                    <!-- 2. Digital Forensics & IR -->
+                    <div class="professional-card p-6 space-y-4 anim-fade-in" data-delay="0.3">
+                        <div class="flex items-center space-x-3 text-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-search"><path d="M4 22h14a2 2 0 0 0 2-2V7.5L14.5 2H6a2 2 0 0 0-2 2v16"/><polyline points="14 2 14 8 20 8"/><path d="m8 14 1.9 1.9c.7.7 1.9.7 2.6 0L14 14"/><circle cx="11.5" cy="11.5" r="2.5"/></svg>
+                            <h3 class="text-xl font-bold">Digital Forensics & IR</h3>
+                        </div>
+                        <ul class="list-none space-y-2 text-sm text-gray-300">
+                            <li><span class="text-primary font-bold">Autopsy</span> (Analyze Data)</li>
+                            <li><span class="text-primary font-bold">FTK Imager / Disk Drill</span> (Recover Data)</li>
+                            <li>Digital Forensics & Incident Response (DFIR)</li>
+                            <li>OS Forensics / Email Forensics</li>
+                            <li>Logs Forensics (Artifact Analysis)</li>
+                        </ul>
+                    </div>
+
+                    <!-- 3. Offensive Security & VAPT -->
+                    <div class="professional-card p-6 space-y-4 anim-fade-in" data-delay="0.5">
+                        <div class="flex items-center space-x-3 text-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bug-play"><path d="M12 21c-4.9 0-9-3.2-9-7h18c0 3.8-4.1 7-9 7"/><path d="M17.8 14a7 7 0 0 0 .2-2V5h3"/><path d="M12 21a9 9 0 0 0 9-9h-6"/><path d="M3 5h3"/><path d="M18 5h3"/><path d="M12 21a9 9 0 0 1-9-9h6"/><path d="M12 17v-4"/><path d="M16 11l-4 4-4-4"/></svg>
+                            <h3 class="text-xl font-bold">Offensive Security & VAPT</h3>
+                        </div>
+                        <ul class="list-none space-y-2 text-sm text-gray-300">
+                            <li><span class="text-primary font-bold">Kali Linux / Metasploit</span> (Exploitation)</li>
+                            <li><span class="text-primary font-bold">Burp Suite</span> (Web Application Testing)</li>
+                            <li><span class="text-primary font-bold">Nessus / Nmap</span> (Scanning)</li>
+                            <li>Attify OS (IOT Pen testing)</li>
+                            <li>Basic & Advance Network Scanning</li>
+                        </ul>
+                    </div>
+
+                    <!-- 4. Threat Intelligence & OSINT -->
+                    <div class="professional-card p-6 space-y-4 anim-fade-in" data-delay="0.7">
+                        <div class="flex items-center space-x-3 text-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-users-round"><path d="M18 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><line x1="19" x2="19" y1="12" y2="18"/><line x1="22" x2="16" y1="15" y2="15"/></svg>
+                            <h3 class="text-xl font-bold">Threat Intelligence & OSINT</h3>
+                        </div>
+                        <ul class="list-none space-y-2 text-sm text-gray-300">
+                            <li>Information Gathering (Core Skill)</li>
+                            <li><span class="text-primary font-bold">OSINT Framework / Spiderfoot</span></li>
+                            <li><span class="text-primary font-bold">SETtool Kit</span> (Social Engineering)</li>
+                            <li><span class="text-primary font-bold">Zphisher</span> (Phishing Campaign Setup)</li>
+                        </ul>
+                    </div>
+
+                    <!-- 5. Platform, Networking & Dev -->
+                    <div class="professional-card p-6 space-y-4 anim-fade-in" data-delay="0.9">
+                        <div class="flex items-center space-x-3 text-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-router"><rect width="20" height="8" x="2" y="14" rx="2"/><path d="M10 14v8"/><path d="M14 14v8"/><line x1="6" x2="6" y1="14" y2="10"/><line x1="18" x2="18" y1="14" y2="10"/><line x1="12" x2="12" y1="14" y2="10"/><path d="M20 10V8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v2"/></svg>
+                            <h3 class="text-xl font-bold">Platform, Networking & Dev</h3>
+                        </div>
+                        <ul class="list-none space-y-2 text-sm text-gray-300">
+                            <li><span class="text-primary font-bold">Cisco</span> (Network Creation)</li>
+                            <li><span class="text-primary font-bold">Wireshark</span> (Capture Network Traffic)</li>
+                            <li><span class="text-primary font-bold">Android Studio</span> (App Design)</li>
+                            <li>Networking (Core Skill)</li>
+                            <li>Android Dev & Full Stack Basics</li>
+                        </ul>
+                    </div>
+
+                </div>
+            </section>
+            
+            <!-- Certifications Section - SORTED BY DATE (Newest to Oldest) -->
+            <section id="certifications" class="py-20 border-t border-secondary">
+                <h2 class="text-4xl font-bold mb-12 text-white anim-fade-in section-header-underline">
+                    Certifications & Training
+                </h2>
+                <!-- Grid for 10 certifications, wrapping nicely on smaller screens -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    
+                    <!-- CERT 1: ISO/IEC 27001 (SEP-2025) - NEWEST -->
+                    <div class="professional-card p-5 anim-fade-in" data-delay="0.2">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-lg font-bold text-white">ISO/IEC 27001:2022</h3>
+                            <span class="text-xs text-gray-400 terminal-code">SEP-2025</span>
+                        </div>
+                        <p class="text-gray-300 text-sm">SKILLFRONT | Information Security Associate™</p>
+                    </div>
+
+                    <!-- CERT 2: Cortex XSOAR (SEP-2025) -->
+                    <div class="professional-card p-5 anim-fade-in" data-delay="0.3">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-lg font-bold text-white">Cortex XSOAR</h3>
+                            <span class="text-xs text-gray-400 terminal-code">SEP-2025</span>
+                        </div>
+                        <p class="text-gray-300 text-sm">PALOALTO | SOAR Platform Operations</p>
+                    </div>
+                    
+                    <!-- CERT 3: Microsoft Student SOC (SEP-2025) -->
+                    <div class="professional-card p-5 anim-fade-in" data-delay="0.4">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-lg font-bold text-white">Student SOC Program</h3>
+                            <span class="text-xs text-gray-400 terminal-code">SEP-2025</span>
+                        </div>
+                        <p class="text-gray-300 text-sm">MICROSOFT | Foundations Training</p>
+                    </div>
+
+                    <!-- CERT 4: Windows-Forensic Certificate (FEB-2025) -->
+                    <div class="professional-card p-5 anim-fade-in" data-delay="0.5">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-lg font-bold text-white">Windows-Forensic</h3>
+                            <span class="text-xs text-gray-400 terminal-code">FEB-2025</span>
+                        </div>
+                        <p class="text-gray-300 text-sm">BELKASOFT | Digital Artifact Analysis</p>
+                    </div>
+
+                    <!-- CERT 5: Osforensics Triage (FEB-2025) -->
+                    <div class="professional-card p-5 anim-fade-in" data-delay="0.6">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-lg font-bold text-white">Osforensics Triage</h3>
+                            <span class="text-xs text-gray-400 terminal-code">FEB-2025</span>
+                        </div>
+                        <p class="text-gray-300 text-sm">OSFORENSICS | Rapid Incident Triage</p>
+                    </div>
+
+                    <!-- CERT 6: Email Forensic Essentials (JAN-2025) -->
+                    <div class="professional-card p-5 anim-fade-in" data-delay="0.7">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-lg font-bold text-white">Email Forensic Essentials</h3>
+                            <span class="text-xs text-gray-400 terminal-code">JAN-2025</span>
+                        </div>
+                        <p class="text-gray-300 text-sm">SYSTOOLS | Incident Response</p>
+                    </div>
+                    
+                    <!-- CERT 7: Cyber Law (DEC-2024) -->
+                    <div class="professional-card p-5 anim-fade-in" data-delay="0.8">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-lg font-bold text-white">Cyber Law</h3>
+                            <span class="text-xs text-gray-400 terminal-code">DEC-2024</span>
+                        </div>
+                        <p class="text-gray-300 text-sm">Swayam Online Course Certification</p>
+                    </div>
+
+                    <!-- CERT 8: Cybersecurity Fundamentals (FEB-2024) -->
+                    <div class="professional-card p-5 anim-fade-in" data-delay="0.9">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-lg font-bold text-white">Cybersecurity Fundamentals</h3>
+                            <span class="text-xs text-gray-400 terminal-code">FEB-2024</span>
+                        </div>
+                        <p class="text-gray-300 text-sm">IBM SkillsBuild | Core Concepts</p>
+                    </div>
+
+                    <!-- CERT 9: Intro to Cyber Security (DEC-2023) -->
+                    <div class="professional-card p-5 anim-fade-in" data-delay="1.0">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-lg font-bold text-white">Intro to Cyber Security</h3>
+                            <span class="text-xs text-gray-400 terminal-code">DEC-2023</span>
+                        </div>
+                        <p class="text-gray-300 text-sm">Swayam Online Course Certification</p>
+                    </div>
+
+                    <!-- CERT 10: SQL Injection Attack (OCT-2023) - OLDEST -->
+                    <div class="professional-card p-5 anim-fade-in" data-delay="1.1">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-lg font-bold text-white">SQL Injection Attack</h3>
+                            <span class="text-xs text-gray-400 terminal-code">OCT-2023</span>
+                        </div>
+                        <p class="text-gray-300 text-sm">EC-COUNCIL | Vulnerability Training</p>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- Projects Section (MODIFIED - PDF Only) -->
+            <section id="projects" class="py-20 border-t border-secondary">
+                <h2 class="text-4xl font-bold mb-12 text-white anim-fade-in section-header-underline">
+                    Key Projects
+                </h2>
+                
+                <div class="space-y-10">
+                    <!-- Project 1: Zero Trust Network Segmentation -->
+                    <div class="professional-card p-8 anim-fade-in" data-delay="0.2">
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-2xl font-bold text-white">Cyber Rakshak</h3>
+                            <span class="text-sm text-gray-500 terminal-code shrink-0 mt-1">Jan-2025</span>
+                        </div>
+                        <p class="text-gray-300 mb-4">
+                            Cyber rakshak is a cybersecurity application designed to provide users with essential security tools and cyber awareness resources. It includes various features aimed at protecting digital assets and educating users 
+                            about online security. The application offers tools such as a password strength tester, auto password generator, message encryption, file malware analysis, and steganography for secure data handling. Additionally, cyber rakshak promotes cyber awareness 
+                            through resources like password security tips, awareness posters, cybersecurity quizzes, and informational charts. One of its key features is cyber ai assistance, which allows users to input cybersecurity
+                            related topics and receive ai-generated insights and answers. The application also includes a profile management section where users can view and update their profile details, log out, or delete their 
+                            profile if needed. For support and assistance, cyber rakshak provides direct access to official cyber fraud reporting portals and emergency contact numbers, enabling users to report incidents quickly. 
+                            Furthermore, it includes a feedback section where users can share their experiences to help improve the application's features and security measures. Cyber rakshak is designed to empower users with the 
+                            necessary tools and knowledge to navigate the digital world safely and securely.
+                        </p>
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mt-6">
+                            <div class="flex flex-wrap gap-2 text-xs font-semibold mb-4 sm:mb-0">
+                                <!-- Tags removed for PDF-only focus -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 2: Automated Compliance Reporter (Python) -->
+                    <div class="professional-card p-8 anim-fade-in" data-delay="0.4">
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-2xl font-bold text-white">Rakshak Logs [ For Android Log Collection ]</h3>
+                            <span class="text-sm text-gray-500 terminal-code shrink-0 mt-1">May-2025</span>
+                        </div>
+                        <p class="text-gray-300 mb-4">
+                                The Rakshak Logs App is a specialized Android and web-based tool designed to collect hardware-level logs from Android devices without requiring root access. Once the user taps the Start button, the app runs silently in the background—even 
+                                if manually closed—until explicitly stopped. It captures a wide range of system activities including service events, app launches and terminations, permission changes, installations, updates, network shifts, file operations, device unlocks, 
+                                configuration changes, battery status, location updates, and port events. Each log entry is tagged with the device name and model for context, and users can apply filters to isolate specific data. The app also features a built-in dashboard that 
+                                visualizes logs through charts and displays total activity counts for efficient analysis. Complementing the mobile app, the Rakshak Web Dashboard offers real-time monitoring of logs from all connected devices. When logging is activated on the app, 
+                                data streams live to the dashboard, where users can filter by device and view activity through dynamic charts and tables. The dashboard includes options to download logs as PDF or Excel files, and users can customize the layout, switch themes, 
+                                manage data backups or deletions, and adjust table column visibility. The “My Account” section allows users to change their username and password and enable two-factor authentication for added security. For administrators, an exclusive panel provides 
+                                enhanced controls to manage users, create accounts, assign admin privileges, and delete users. Overall, Rakshak offers a robust and user-friendly solution for system-level log collection and monitoring across Android devices.
+                            </p>
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mt-6">
+                            <div class="flex flex-wrap gap-2 text-xs font-semibold mb-4 sm:mb-0">
+                                <!-- Tags removed for PDF-only focus -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Contact Section -->
+            <section id="contact" class="py-20 border-t border-secondary">
+                <h2 class="text-4xl font-bold mb-12 text-white anim-fade-in section-header-underline">
+                    Connect & Contact Details
+                </h2>
+                <div class="max-w-4xl mx-auto anim-fade-in" data-delay="0.2">
+                    <p class="text-lg text-gray-300 mb-10 text-center">
+                        I am actively seeking roles in SOC, DFIR, and Cybersecurity. Use the secure channels below to connect directly, or view my printable resume for detailed experience.
+                    </p>
+
+                    <!-- Connection Details -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-10">
+                        <!-- Email -->
+                        <div class="flex items-center space-x-4 professional-card p-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mail text-primary"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                            <div>
+                                <p class="text-sm text-gray-400">Email</p>
+                                <a href="mailto:blackhackor20@gmail.com" class="text-white font-semibold hover:text-primary transition">blackhackor20@gmail.com</a>
+                            </div>
+                        </div>
+                        <!-- Phone -->
+                        <div class="flex items-center space-x-4 professional-card p-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-phone text-primary"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.63A2 2 0 0 1 4.08 2h3a2 2 0 0 1 2 1.72 17.65 17.65 0 0 0 .15 2.82 2 2 0 0 1-1.6 2.4l-1 0a2 2 0 0 0-1.78 1.13c-.09.28.1.58.38.74l3.5 2.5a.78.78 0 0 0 .5.16 1.4 1.4 0 0 0 .5-.16l3.5-2.5c.28-.16.47-.46.38-.74a2 2 0 0 0-1.78-1.13l-1 0a2 2 0 0 1-1.6-2.4 17.65 17.65 0 0 0 .15-2.82 2 2 0 0 1 2-1.72h3a2 2 0 0 1 2 2v3"/></svg>
+                            <div>
+                                <p class="text-sm text-gray-400">Phone</p>
+                                <span class="text-white font-semibold">+91 7600267252</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Social Media Links -->
+                    <div class="flex flex-col sm:flex-row gap-4 mb-10">
+                        <!-- LinkedIn -->
+                        <a href="http://www.linkedin.com/in/tixxh" target="_blank" class="flex-1 professional-card p-4 flex items-center space-x-3 hover:bg-primary/10 transition duration-300">
+                            <!-- Custom LinkedIn SVG -->
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><path d="M16 8a6 6 0 0 0-6 6v7h4v-7a2 2 0 0 1 2-2 2 2 0 0 1 2 2v7h4v-7a6 6 0 0 0-6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
+                            <span class="font-semibold text-white terminal-code">/in/tixxh</span>
+                        </a>
+                       
+                    </div>
+
+                    <!-- Resume Download Button -->
+                    <a href="#resume-view" id="show-resume-btn" class="btn-primary px-6 py-4 rounded-md w-full text-center flex items-center justify-center space-x-2 text-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-text"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
+                        <span>VIEW TIRTH RESUME </span>
+                    </a>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-card-bg py-8 mt-10 border-t border-secondary">
+            <div class="max-w-7xl mx-auto px-6 text-center text-gray-500 text-sm">
+                &copy; 2025 Tirth Panawala. All Rights Reserved.
+            </div>
+        </footer>
+    </div>
+
+    <!-- 
+      This div contains the hidden A4-style resume.
+      It is hidden by default and shown via JavaScript.
+    -->
+    <div id="resume-view">
+        <!-- Back Button & Download Button -->
+        <div id="resume-controls">
+            <button id="back-to-portfolio-btn">
+                &larr; Back to Portfolio
+            </button>
+            <button id="download-png-btn">
+                Download PNG
+            </button>
+        </div>
+
+        <div class="page" id="resume-page-content">
+            <header class="header">
+                <h1>TIRTH<br>PANAWALA</h1>
+                <h2>CYBER ANALYST</h2>
+                <div class="contact-info">
+                    <p>📞 +91 7600267252</p>
+                    <p>📧 tirthpanawala@gmail.com</p>
+                    <p>🌐 <a href="http://www.linkedin.com/in/tixxh" target="_blank">linkedin.com/in/tixxh</a></p>
+                </div>
+            </header>
+            <hr>
+            <section class="about-me">
+                <h3>ABOUT ME</h3>
+                <p>
+                    Motivated Master's student at Indus University with SOC experience in live threat monitoring, IP blocking, and incident response via Wazuh SIEM. Skilled in digital forensics, phishing mitigation, and offline cybersecurity solutions using tools like OSForensics, Autopsy, and Volatility. Proactive, detail-oriented, and committed to continuous learning in fast-evolving cyber defense environments.
+                </p>
+                <p><b>Gender:</b> Male | <b>Hobbies:</b> Drawing, Crafting, Music, Photography, Traveling</p>
+            </section>
+            <div class="main-columns">
+                <div class="column-left">
+                    <section class="education">
+                        <h3>EDUCATION</h3>
+                        <ul class="section-list">
+                            <li>
+                                <div class="item-left">
+                                    <h4>2023 - 2025</h4>
+                                    <p>Indus University, Ahmedabad</p>
+                                </div>
+                                <div class="item-right">
+                                    <h4>MASTER OF COMPUTER CYBER SECURITY</h4>
+                                    <p>Cleared MSCCS Sem 1 (10 SGPA), Sem 2 (9.48 SGPA), Sem 3 (9.85 SGPA).</p>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="item-left">
+                                    <h4>2020 - 2023</h4>
+                                    <p>Khyati Foundation, Ahmedabad</p>
+                                </div>
+                                <div class="item-right">
+                                    <h4>Bachelor of Computer Applications [BCA]</h4>
+                                    <p>From Gujarat University</p>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="item-left">
+                                    <h4>2020</h4>
+                                    <p>J.L High School, Ahmedabad</p>
+                                </div>
+                                <div class="item-right">
+                                    <h4>Standard 12th</h4>
+                                    <p>Gujarat Secondary and Higher Secondary Board</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </section>
+                    <section class="projects">
+                        <h3>PROJECT</h3>
+                        <div class="project-columns">
+                            <div class="project-item">
+                                <h4>Cyber Rakshak For Android [ Tool ]</h4>
+                                <p>For Cyber Security Tools & cyber Awareness helping tool</p>
+                            </div>
+                            <div class="project-item">
+                                <h4>Rakshak Logs For Android [ Tool ]</h4>
+                                <p>For Android Mobile phone logs collectors and monitoring tool</p>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="languages">
+                        <h3>LANGUAGES</h3>
+                        <ul>
+                            <li>Gujrati (Fluent)</li>
+                            <li>Hindi (Fluent)</li>
+                            <li>English (Basics)</li>
+                        </ul>
+                    </section>
+                </div>
+                <div class="column-right">
+                    <section class="experience">
+                        <h3>EXPERIENCE</h3>
+                        <ul class="section-list">
+                            <li>
+                                <div class="item-left">
+                                    <h4>MAY 2025 - OCT 2025</h4>
+                                    <p>PSY9 Security</p>
+                                </div>
+                                <div class="item-right">
+                                    <h4>SOC Analyst L1 Internship</h4>
+                                    <p>Contributed to live threat monitoring and incident response using Wazuh SIEM, showcasing precision and proactive mitigation.</p>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="item-left">
+                                    <h4>JAN 2025 - APR 2025</h4>
+                                    <p>Heritage Cyber Wolrd</p>
+                                </div>
+                                <div class="item-right">
+                                    <h4>DFIR Analyst Internship</h4>
+                                    <p>Gained hands-on experience with FTK and Autopsy for data recovery and forensic imaging. Earned certifications in Belkasoft and SysTools.</p>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="item-left">
+                                    <h4>MAY 2022 - FEB 2023</h4>
+                                    <p>NichTech Company, Ahmedabad</p>
+                                </div>
+                                <div class="item-right">
+                                    <h4>Android Developer</h4>
+                                    <p>Developed advanced Android applications, collaborated with cross-functional teams, and integrated external data sources and APIs.</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </section>
+                    <section class="skills">
+                        <h3>SKILLS</h3>
+                        <ul class="multi-column-list">
+                            <li>SOC Monitoring</li>
+                            <li>IOT Pen testing</li>
+                            <li>Information Gathering</li>
+                            <li>Digital Forensics & IR</li>
+                            <li>Basic Network Scanning</li>
+                            <li>Android Studio</li>
+                            <li>Event Management</li>
+                            <li>Logs Forensics</li>
+                            <li>Java</li>
+                            <li>Incident Management [SIEM]</li>
+                            <li>Python</li>
+                            <li>Time Management</li>
+                            <li>Networking</li>
+                        </ul>
+                    </section>
+                    <section class="tools">
+                        <h3>TOOLS & TECHNOLOGIES</h3>
+                        <ul class="multi-column-list">
+                            <li>Wazuh</li>
+                            <li>Nmap</li>
+                            <li>Attify OS</li>
+                            <li>Wireshark</li>
+                            <li>OSINT Framework</li>
+                            <li>Spiderfoot</li>
+                            <li>Zphisher</li>
+                            <li>SETtool Kit</li>
+                            <li>OS Forensics</li>
+                            <li>Kali Linux</li>
+                            <li>Burp Suite</li>
+                            <li>Email Forensics</li>
+                            <li>FTK Imager</li>
+                            <li>Autopsy</li>
+                            <li>Splunk</li>
+                            <li>Metasploit</li>
+                            <li>Nessus</li>
+                        </ul>
+                    </section>
+                    <section class="certificates">
+                        <h3>CERTIFICATES</h3>
+                        <ul class="section-list certificates-list">
+                            <li>
+                                <div class="item-left"><h4>SEP-2025</h4></div>
+                                <div class="item-right"><h4>ISO/IEC 27001:2022</h4><p>SKILLFRONT</p></div>
+                            </li>
+                            <li>
+                                <div class="item-left"><h4>SEP-2025</h4></div>
+                                <div class="item-right"><h4>Cortex XSOAR: Features</h4><p>Paloalto</p></div>
+                            </li>
+                            <li>
+                                <div class="item-left"><h4>FEB-2025</h4></div>
+                                <div class="item-right"><h4>Windows-Forensic Certificate</h4><p>BELKASOFT</p></div>
+                            </li>
+                            <li>
+                                <div class="item-left"><h4>FEB-2025</h4></div>
+                                <div class="item-right"><h4>Osforensics Triage</h4><p>Osforensics</p></div>
+                            </li>
+                            <li>
+                                <div class="item-left"><h4>JAN-2025</h4></div>
+                                <div class="item-right"><h4>Email Forensic Essentials & IR</h4><p>Systools</p></div>
+                            </li>
+                            <li>
+                                <div class="item-left"><h4>DEC-2024</h4></div>
+                                <div class="item-right"><h4>Cyber Law (78%)</h4><p>Swayam</p></div>
+                            </li>
+                            <li>
+                                <div class="item-left"><h4>AUG-2023</h4></div>
+                                <div class="item-right"><h4>Cyber Security</h4><p>Google Developer Launchpad</p></div>
+                            </li>
+                            <li>
+                                <div class="item-left"><h4>DEC-2023</h4></div>
+                                <div class="item-right"><h4>Intro to Cyber Security (61%)</h4><p>Swayam</p></div>
+                            </li>
+                        </ul>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- JavaScript for Dynamic Effects -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // --- Intersection Observer for On-Scroll Fade-In Animations ---
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    const element = entry.target;
+                    const delay = element.getAttribute('data-delay') || '0';
+
+                    if (entry.isIntersecting) {
+                        element.style.transitionDelay = `${delay}s`;
+                        element.classList.add('is-visible');
+
+                        // Stop observing once visible
+                        observer.unobserve(element);
+                    }
+                });
+            }, observerOptions);
+
+            // Observe all elements with the animation class
+            document.querySelectorAll('.anim-fade-in').forEach(element => {
+                observer.observe(element);
+            });
+
+            // Initialize Lucide Icons
+            lucide.createIcons();
+            
+            // --- Portfolio/Resume Toggle Logic ---
+            const portfolioView = document.getElementById('portfolio-view');
+            const resumeView = document.getElementById('resume-view');
+            const showResumeBtn = document.getElementById('show-resume-btn');
+            const backToPortfolioBtn = document.getElementById('back-to-portfolio-btn');
+            
+            // --- PNG Download Logic ---
+            const downloadPngBtn = document.getElementById('download-png-btn');
+            const resumePageContent = document.getElementById('resume-page-content');
+
+            if (portfolioView && resumeView && showResumeBtn && backToPortfolioBtn && downloadPngBtn && resumePageContent) {
+                // Click "VIEW PRINTABLE RESUME"
+                showResumeBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    portfolioView.style.display = 'none';
+                    resumeView.style.display = 'block';
+                    window.scrollTo(0, 0); // Scroll to top
+                });
+
+                // Click "Back to Portfolio"
+                backToPortfolioBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    resumeView.style.display = 'none';
+                    portfolioView.style.display = 'block';
+                    window.scrollTo(0, 0); // Scroll to top
+                });
+
+                // Click "Download PNG"
+                downloadPngBtn.addEventListener('click', () => {
+                    const page = resumePageContent;
+                    
+                    // Original button text
+                    const originalBtnText = downloadPngBtn.innerHTML;
+                    downloadPngBtn.innerHTML = "Processing PNG...";
+                    downloadPngBtn.disabled = true;
+
+                    // Get dimensions
+                    const page_height = page.offsetHeight;
+
+                    html2canvas(page, {
+                        scale: 3, // Increase scale for better quality
+                        useCORS: true,
+                        // Ensure it captures the full height, even if off-screen
+                        windowHeight: page_height, 
+                        scrollY: 0 
+                    }).then(canvas => {
+                        // Create a link to download the canvas as a PNG
+                        const link = document.createElement('a');
+                        link.href = canvas.toDataURL('image/png');
+                        link.download = 'Tirth_Panawala_CV.png';
+                        
+                        // Append to body, click, and remove
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                        
+                        // Restore button
+                        downloadPngBtn.innerHTML = originalBtnText;
+                        downloadPngBtn.disabled = false;
+                    }).catch(err => {
+                        console.error("Error generating PNG: ", err);
+                        alert("Sorry, there was an error generating the PNG.");
+                        // Restore button on error
+                        downloadPngBtn.innerHTML = originalBtnText;
+                        downloadPngBtn.disabled = false;
+                    });
+                });
+
+            } else {
+                console.error("Error: Could not find all necessary elements for resume toggle.");
+            }
+        });
+    </script>
+</body>
+</html>
