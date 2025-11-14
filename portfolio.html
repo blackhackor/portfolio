@@ -4,15 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tirth Panawala - Cybersecurity Portfolio</title>
-    <!-- Load Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Load Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     
-    <!-- Load PNG Generation Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     
-    <!-- --- STYLES FOR PORTFOLIO --- -->
     <style>
         /* Define Theme Variables */
         :root {
@@ -103,7 +99,6 @@
         }
     </style>
     
-    <!-- --- STYLES FOR PRINTABLE A4 RESUME --- -->
     <style>
         /* These styles are scoped to the #resume-view div */
         /* A4 Page Styling */
@@ -143,6 +138,8 @@
             font-family: 'Inter', sans-serif;
             font-weight: 600;
             transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
         }
         #resume-controls button:hover {
             background-color: #00A9E6;
@@ -340,11 +337,23 @@
         }
 
         /* Responsive Design */
-        @media (max-width: 210mm) {
+        @media (max-width: 768px) { /* UPDATED from 210mm */
+            #resume-controls {
+                flex-direction: column;
+                top: 10px;
+                left: 10px;
+                right: 10px; /* Make it constrained by screen edges */
+                width: auto; /* Remove default width */
+            }
+            #resume-controls button {
+                justify-content: center; /* Center text */
+            }
+
             #resume-view .page {
                 width: 100%;
                 margin: 0;
-                padding: 20px;
+                /* UPDATED: Add padding-top to clear the fixed buttons */
+                padding: 140px 20px 20px 20px; 
                 box-shadow: none;
             }
             #resume-view .header h1 {
@@ -400,9 +409,7 @@
 </head>
 <body class="pt-20">
 
-    <!-- This div contains the main portfolio site -->
     <div id="portfolio-view">
-        <!-- Header & Navigation -->
         <header class="fixed top-0 left-0 w-full bg-bg-main/95 backdrop-blur-sm z-50 shadow-lg shadow-black/50">
             <nav class="max-w-7xl mx-auto flex justify-between items-center px-6 py-4">
                 <a href="#home" class="text-2xl font-extrabold text-white tracking-wider">
@@ -415,28 +422,37 @@
                     <a href="#projects" class="text-white hover:text-primary transition duration-200">Projects</a>
                     <a href="#contact" class="text-white hover:text-primary transition duration-200">Contact</a>
                 </div>
-                <!-- Mobile Menu Placeholder -->
                 <button id="menu-button" class="md:hidden text-white p-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-menu"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+                    <svg id="menu-icon-open" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-menu"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+                    <svg id="menu-icon-close" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x hidden"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
                 </button>
             </nav>
+            
+            <div id="mobile-menu" class="hidden md:hidden absolute top-full left-0 w-full bg-card-bg shadow-lg py-4">
+                <div class="flex flex-col space-y-4 px-6">
+                    <a href="#about" class="text-white hover:text-primary transition duration-200 py-2">About</a>
+                    <a href="#expertise" class="text-white hover:text-primary transition duration-200 py-2">Expertise</a>
+                    <a href="#certifications" class="text-white hover:text-primary transition duration-200 py-2">Certifications</a>
+                    <a href="#projects" class="text-white hover:text-primary transition duration-200 py-2">Projects</a>
+                    <a href="#contact" class="text-white hover:text-primary transition duration-200 py-2">Contact</a>
+                </div>
+            </div>
         </header>
 
         <main class="max-w-7xl mx-auto px-6">
             
-            <!-- Hero Section -->
             <section id="home" class="min-h-[80vh] flex items-center pt-10 pb-20">
                 <div class="lg:w-3/4 space-y-6 anim-fade-in" data-delay="0.1">
                     <p class="text-xl text-primary terminal-code tracking-wider">
                         $ ./data is money, --keep it safe like you would keep_money_safe.
                     </p>
-                    <h1 class="text-5xl md:text-7xl font-extrabold leading-tight text-white">
+                    <h1 class="text-4xl sm:text-5xl md:text-7xl font-extrabold leading-tight text-white">
                         Tirth Panawala: <span class="text-primary">Cyber Security Analyst</span>
                     </h1>
                     <p class="text-xl text-gray-400 max-w-3xl">
                         Motivated Master’s student with SOC experience in live threat monitoring, IP blocking, and incident response using Wazuh SIEM. Skilled in digital forensics, phishing mitigation, and offline analysis with OSForensics, Autopsy, and Volatility.
                     </p>
-                    <div class="flex space-x-4 pt-4">
+                    <div class="flex flex-wrap gap-4 pt-4">
                         <a href="#contact" class="btn-primary px-8 py-3 rounded-md">
                             Secure Connection
                         </a>
@@ -447,13 +463,11 @@
                 </div>
             </section>
 
-            <!-- About Section -->
             <section id="about" class="py-20 border-t border-secondary">
                 <h2 class="text-4xl font-bold mb-12 text-white anim-fade-in section-header-underline">
                     About Me
                 </h2>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-10 anim-fade-in" data-delay="0.3">
-                    <!-- Bio Text -->
                     <div class="md:col-span-2 space-y-6 text-lg text-gray-300">
                         <p>
                             With hands-on SOC experience in live threat monitoring, IP blocking, and incident response via Wazuh SIEM, my focus is on automating and streamlining security operations. My workflows leverage tools like Splunk and native OS utilities to maintain operational hygiene and accelerate response.
@@ -466,12 +480,11 @@
                         </p>
                     </div>
                     
-                    <!-- Contact Mini-Card -->
                     <div class="professional-card p-6 space-y-3">
                         <h3 class="text-xl font-semibold text-primary mb-2">Key Info</h3>
                         <div class="flex items-center space-x-3 text-gray-400">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mail text-primary"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-                            <a href="mailto:blackhackor20@gmail.com" class="hover:text-white transition">blackhackor20@gmail.com</a>
+                            <a href="mailto:blackhackor20@gmail.com" class="hover:text-white transition break-all">blackhackor20@gmail.com</a>
                         </div>
                         <div class="flex items-center space-x-3 text-gray-400">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-map-pin text-primary"><path d="M12 10a7 7 0 1 0 0 14h0a7 7 0 0 0 0-14z"/><path d="M12 2a10 10 0 0 0-10 10c0 4.42 2.76 8.5 7 9.87V22h6v-0.13c4.24-1.37 7-5.45 7-9.87A10 10 0 0 0 12 2z"/></svg>
@@ -481,16 +494,13 @@
                 </div>
             </section>
 
-            <!-- Expertise Section - CATEGORIZED MATRIX -->
             <section id="expertise" class="py-20 border-t border-secondary">
                 <h2 class="text-4xl font-bold mb-12 text-white anim-fade-in section-header-underline">
                     Technical Expertise
                 </h2>
 
-                <!-- Grid for the 5 Skill Categories (3 columns on large screen, 2 on medium, 1 on small) -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
-                    <!-- 1. SOC & SIEM Operations -->
                     <div class="professional-card p-6 space-y-4 anim-fade-in" data-delay="0.1">
                         <div class="flex items-center space-x-3 text-primary">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shield-check"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><path d="m9 12 2 2 4-4"/></svg>
@@ -505,7 +515,6 @@
                         </ul>
                     </div>
 
-                    <!-- 2. Digital Forensics & IR -->
                     <div class="professional-card p-6 space-y-4 anim-fade-in" data-delay="0.3">
                         <div class="flex items-center space-x-3 text-primary">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-search"><path d="M4 22h14a2 2 0 0 0 2-2V7.5L14.5 2H6a2 2 0 0 0-2 2v16"/><polyline points="14 2 14 8 20 8"/><path d="m8 14 1.9 1.9c.7.7 1.9.7 2.6 0L14 14"/><circle cx="11.5" cy="11.5" r="2.5"/></svg>
@@ -520,7 +529,6 @@
                         </ul>
                     </div>
 
-                    <!-- 3. Offensive Security & VAPT -->
                     <div class="professional-card p-6 space-y-4 anim-fade-in" data-delay="0.5">
                         <div class="flex items-center space-x-3 text-primary">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bug-play"><path d="M12 21c-4.9 0-9-3.2-9-7h18c0 3.8-4.1 7-9 7"/><path d="M17.8 14a7 7 0 0 0 .2-2V5h3"/><path d="M12 21a9 9 0 0 0 9-9h-6"/><path d="M3 5h3"/><path d="M18 5h3"/><path d="M12 21a9 9 0 0 1-9-9h6"/><path d="M12 17v-4"/><path d="M16 11l-4 4-4-4"/></svg>
@@ -535,7 +543,6 @@
                         </ul>
                     </div>
 
-                    <!-- 4. Threat Intelligence & OSINT -->
                     <div class="professional-card p-6 space-y-4 anim-fade-in" data-delay="0.7">
                         <div class="flex items-center space-x-3 text-primary">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-users-round"><path d="M18 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><line x1="19" x2="19" y1="12" y2="18"/><line x1="22" x2="16" y1="15" y2="15"/></svg>
@@ -549,7 +556,6 @@
                         </ul>
                     </div>
 
-                    <!-- 5. Platform, Networking & Dev -->
                     <div class="professional-card p-6 space-y-4 anim-fade-in" data-delay="0.9">
                         <div class="flex items-center space-x-3 text-primary">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-router"><rect width="20" height="8" x="2" y="14" rx="2"/><path d="M10 14v8"/><path d="M14 14v8"/><line x1="6" x2="6" y1="14" y2="10"/><line x1="18" x2="18" y1="14" y2="10"/><line x1="12" x2="12" y1="14" y2="10"/><path d="M20 10V8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v2"/></svg>
@@ -567,15 +573,12 @@
                 </div>
             </section>
             
-            <!-- Certifications Section - SORTED BY DATE (Newest to Oldest) -->
             <section id="certifications" class="py-20 border-t border-secondary">
                 <h2 class="text-4xl font-bold mb-12 text-white anim-fade-in section-header-underline">
                     Certifications & Training
                 </h2>
-                <!-- Grid for 10 certifications, wrapping nicely on smaller screens -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     
-                    <!-- CERT 1: ISO/IEC 27001 (SEP-2025) - NEWEST -->
                     <div class="professional-card p-5 anim-fade-in" data-delay="0.2">
                         <div class="flex items-center justify-between mb-2">
                             <h3 class="text-lg font-bold text-white">ISO/IEC 27001:2022</h3>
@@ -584,7 +587,6 @@
                         <p class="text-gray-300 text-sm">SKILLFRONT | Information Security Associate™</p>
                     </div>
 
-                    <!-- CERT 2: Cortex XSOAR (SEP-2025) -->
                     <div class="professional-card p-5 anim-fade-in" data-delay="0.3">
                         <div class="flex items-center justify-between mb-2">
                             <h3 class="text-lg font-bold text-white">Cortex XSOAR</h3>
@@ -593,7 +595,6 @@
                         <p class="text-gray-300 text-sm">PALOALTO | SOAR Platform Operations</p>
                     </div>
                     
-                    <!-- CERT 3: Microsoft Student SOC (SEP-2025) -->
                     <div class="professional-card p-5 anim-fade-in" data-delay="0.4">
                         <div class="flex items-center justify-between mb-2">
                             <h3 class="text-lg font-bold text-white">Student SOC Program</h3>
@@ -602,7 +603,6 @@
                         <p class="text-gray-300 text-sm">MICROSOFT | Foundations Training</p>
                     </div>
 
-                    <!-- CERT 4: Windows-Forensic Certificate (FEB-2025) -->
                     <div class="professional-card p-5 anim-fade-in" data-delay="0.5">
                         <div class="flex items-center justify-between mb-2">
                             <h3 class="text-lg font-bold text-white">Windows-Forensic</h3>
@@ -611,7 +611,6 @@
                         <p class="text-gray-300 text-sm">BELKASOFT | Digital Artifact Analysis</p>
                     </div>
 
-                    <!-- CERT 5: Osforensics Triage (FEB-2025) -->
                     <div class="professional-card p-5 anim-fade-in" data-delay="0.6">
                         <div class="flex items-center justify-between mb-2">
                             <h3 class="text-lg font-bold text-white">Osforensics Triage</h3>
@@ -620,7 +619,6 @@
                         <p class="text-gray-300 text-sm">OSFORENSICS | Rapid Incident Triage</p>
                     </div>
 
-                    <!-- CERT 6: Email Forensic Essentials (JAN-2025) -->
                     <div class="professional-card p-5 anim-fade-in" data-delay="0.7">
                         <div class="flex items-center justify-between mb-2">
                             <h3 class="text-lg font-bold text-white">Email Forensic Essentials</h3>
@@ -629,7 +627,6 @@
                         <p class="text-gray-300 text-sm">SYSTOOLS | Incident Response</p>
                     </div>
                     
-                    <!-- CERT 7: Cyber Law (DEC-2024) -->
                     <div class="professional-card p-5 anim-fade-in" data-delay="0.8">
                         <div class="flex items-center justify-between mb-2">
                             <h3 class="text-lg font-bold text-white">Cyber Law</h3>
@@ -638,7 +635,6 @@
                         <p class="text-gray-300 text-sm">Swayam Online Course Certification</p>
                     </div>
 
-                    <!-- CERT 8: Cybersecurity Fundamentals (FEB-2024) -->
                     <div class="professional-card p-5 anim-fade-in" data-delay="0.9">
                         <div class="flex items-center justify-between mb-2">
                             <h3 class="text-lg font-bold text-white">Cybersecurity Fundamentals</h3>
@@ -647,7 +643,6 @@
                         <p class="text-gray-300 text-sm">IBM SkillsBuild | Core Concepts</p>
                     </div>
 
-                    <!-- CERT 9: Intro to Cyber Security (DEC-2023) -->
                     <div class="professional-card p-5 anim-fade-in" data-delay="1.0">
                         <div class="flex items-center justify-between mb-2">
                             <h3 class="text-lg font-bold text-white">Intro to Cyber Security</h3>
@@ -656,7 +651,6 @@
                         <p class="text-gray-300 text-sm">Swayam Online Course Certification</p>
                     </div>
 
-                    <!-- CERT 10: SQL Injection Attack (OCT-2023) - OLDEST -->
                     <div class="professional-card p-5 anim-fade-in" data-delay="1.1">
                         <div class="flex items-center justify-between mb-2">
                             <h3 class="text-lg font-bold text-white">SQL Injection Attack</h3>
@@ -668,14 +662,12 @@
                 </div>
             </section>
 
-            <!-- Projects Section (MODIFIED - PDF Only) -->
             <section id="projects" class="py-20 border-t border-secondary">
                 <h2 class="text-4xl font-bold mb-12 text-white anim-fade-in section-header-underline">
                     Key Projects
                 </h2>
                 
                 <div class="space-y-10">
-                    <!-- Project 1: Zero Trust Network Segmentation -->
                     <div class="professional-card p-8 anim-fade-in" data-delay="0.2">
                         <div class="flex justify-between items-start mb-4">
                             <h3 class="text-2xl font-bold text-white">Cyber Rakshak</h3>
@@ -692,12 +684,10 @@
                         </p>
                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mt-6">
                             <div class="flex flex-wrap gap-2 text-xs font-semibold mb-4 sm:mb-0">
-                                <!-- Tags removed for PDF-only focus -->
-                            </div>
+                                </div>
                         </div>
                     </div>
 
-                    <!-- Project 2: Automated Compliance Reporter (Python) -->
                     <div class="professional-card p-8 anim-fade-in" data-delay="0.4">
                         <div class="flex justify-between items-start mb-4">
                             <h3 class="text-2xl font-bold text-white">Rakshak Logs [ For Android Log Collection ]</h3>
@@ -714,14 +704,12 @@
                             </p>
                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mt-6">
                             <div class="flex flex-wrap gap-2 text-xs font-semibold mb-4 sm:mb-0">
-                                <!-- Tags removed for PDF-only focus -->
-                            </div>
+                                </div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- Contact Section -->
             <section id="contact" class="py-20 border-t border-secondary">
                 <h2 class="text-4xl font-bold mb-12 text-white anim-fade-in section-header-underline">
                     Connect & Contact Details
@@ -731,17 +719,14 @@
                         I am actively seeking roles in SOC, DFIR, and Cybersecurity. Use the secure channels below to connect directly, or view my printable resume for detailed experience.
                     </p>
 
-                    <!-- Connection Details -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-10">
-                        <!-- Email -->
                         <div class="flex items-center space-x-4 professional-card p-4">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mail text-primary"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
                             <div>
                                 <p class="text-sm text-gray-400">Email</p>
-                                <a href="mailto:blackhackor20@gmail.com" class="text-white font-semibold hover:text-primary transition">blackhackor20@gmail.com</a>
+                                <a href="mailto:blackhackor20@gmail.com" class="text-white font-semibold hover:text-primary transition break-all">blackhackor20@gmail.com</a>
                             </div>
                         </div>
-                        <!-- Phone -->
                         <div class="flex items-center space-x-4 professional-card p-4">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-phone text-primary"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.63A2 2 0 0 1 4.08 2h3a2 2 0 0 1 2 1.72 17.65 17.65 0 0 0 .15 2.82 2 2 0 0 1-1.6 2.4l-1 0a2 2 0 0 0-1.78 1.13c-.09.28.1.58.38.74l3.5 2.5a.78.78 0 0 0 .5.16 1.4 1.4 0 0 0 .5-.16l3.5-2.5c.28-.16.47-.46.38-.74a2 2 0 0 0-1.78-1.13l-1 0a2 2 0 0 1-1.6-2.4 17.65 17.65 0 0 0 .15-2.82 2 2 0 0 1 2-1.72h3a2 2 0 0 1 2 2v3"/></svg>
                             <div>
@@ -751,18 +736,14 @@
                         </div>
                     </div>
 
-                    <!-- Social Media Links -->
                     <div class="flex flex-col sm:flex-row gap-4 mb-10">
-                        <!-- LinkedIn -->
                         <a href="http://www.linkedin.com/in/tixxh" target="_blank" class="flex-1 professional-card p-4 flex items-center space-x-3 hover:bg-primary/10 transition duration-300">
-                            <!-- Custom LinkedIn SVG -->
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><path d="M16 8a6 6 0 0 0-6 6v7h4v-7a2 2 0 0 1 2-2 2 2 0 0 1 2 2v7h4v-7a6 6 0 0 0-6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
                             <span class="font-semibold text-white terminal-code">/in/tixxh</span>
                         </a>
-                       
+                        
                     </div>
 
-                    <!-- Resume Download Button -->
                     <a href="#resume-view" id="show-resume-btn" class="btn-primary px-6 py-4 rounded-md w-full text-center flex items-center justify-center space-x-2 text-lg">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-text"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
                         <span>VIEW TIRTH RESUME </span>
@@ -771,7 +752,6 @@
             </section>
         </main>
 
-        <!-- Footer -->
         <footer class="bg-card-bg py-8 mt-10 border-t border-secondary">
             <div class="max-w-7xl mx-auto px-6 text-center text-gray-500 text-sm">
                 &copy; 2025 Tirth Panawala. All Rights Reserved.
@@ -779,12 +759,7 @@
         </footer>
     </div>
 
-    <!-- 
-      This div contains the hidden A4-style resume.
-      It is hidden by default and shown via JavaScript.
-    -->
     <div id="resume-view">
-        <!-- Back Button & Download Button -->
         <div id="resume-controls">
             <button id="back-to-portfolio-btn">
                 &larr; Back to Portfolio
@@ -990,7 +965,6 @@
     </div>
 
 
-    <!-- JavaScript for Dynamic Effects -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
 
@@ -1024,6 +998,29 @@
             // Initialize Lucide Icons
             lucide.createIcons();
             
+            // --- NEW: Mobile Menu Toggle Logic ---
+            const menuButton = document.getElementById('menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const menuIconOpen = document.getElementById('menu-icon-open');
+            const menuIconClose = document.getElementById('menu-icon-close');
+            
+            if (menuButton && mobileMenu && menuIconOpen && menuIconClose) {
+                menuButton.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                    menuIconOpen.classList.toggle('hidden');
+                    menuIconClose.classList.toggle('hidden');
+                });
+
+                // Close menu when a link inside it is clicked
+                mobileMenu.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        mobileMenu.classList.add('hidden');
+                        menuIconOpen.classList.remove('hidden');
+                        menuIconClose.classList.add('hidden');
+                    });
+                });
+            }
+
             // --- Portfolio/Resume Toggle Logic ---
             const portfolioView = document.getElementById('portfolio-view');
             const resumeView = document.getElementById('resume-view');
