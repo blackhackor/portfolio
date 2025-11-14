@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
-    <meta charset="UTF8">
+    <meta charset="UTF-8">
     
-    <meta name="viewport" content="width=1280">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <title>Tirth Panawala - Cybersecurity Portfolio</title>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -339,9 +339,8 @@
         }
 
         /* =====================================================
-        NOTE: I am leaving these responsive @media styles.
-        They will NOT apply because the viewport is fixed,
-        but deleting them is extra work and doesn't hurt.
+        FIXED: Responsive @media styles for mobile.
+        This will now work because the viewport tag is correct.
         =====================================================
         */
         @media (max-width: 768px) { 
@@ -349,16 +348,17 @@
                 flex-direction: column;
                 top: 10px;
                 left: 10px;
-                right: 10px; 
-                width: auto; 
+                right: 10px; /* Make it constrained by screen edges */
+                width: auto; /* Remove default width */
             }
             #resume-controls button {
-                justify-content: center; 
+                justify-content: center; /* Center text */
             }
 
             #resume-view .page {
                 width: 100%;
                 margin: 0;
+                /* Add padding-top to clear the fixed buttons */
                 padding: 140px 20px 20px 20px; 
                 box-shadow: none;
             }
@@ -378,7 +378,7 @@
                 gap: 5px;
             }
             #resume-view .item-left {
-                flex-basis: auto; 
+                flex-basis: auto; /* Stack date/location */
             }
             #resume-view .project-columns {
                 flex-direction: column;
