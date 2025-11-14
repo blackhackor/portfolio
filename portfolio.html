@@ -545,7 +545,7 @@
 
                     <div class="professional-card p-6 space-y-4 anim-fade-in" data-delay="0.7">
                         <div class="flex items-center space-x-3 text-primary">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-users-round"><path d="M18 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><line x1="19" x2="19" y1="12" y2="18"/><line x1="22" x2="16" y1="15" y2="15"/></svg>
+                            <svg xmlns="http://www.w3.org/2D00/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-users-round"><path d="M18 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><line x1="19" x2="19" y1="12" y2="18"/><line x1="22" x2="16" y1="15" y2="15"/></svg>
                             <h3 class="text-xl font-bold">Threat Intelligence & OSINT</h3>
                         </div>
                         <ul class="list-none space-y-2 text-sm text-gray-300">
@@ -968,7 +968,33 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
 
-            // --- Intersection Observer for On-Scroll Fade-In Animations ---
+            // --- 1. Mobile Menu Toggle Logic (RUN FIRST) ---
+            // This is the most critical part for mobile usability.
+            const menuButton = document.getElementById('menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const menuIconOpen = document.getElementById('menu-icon-open');
+            const menuIconClose = document.getElementById('menu-icon-close');
+            
+            if (menuButton && mobileMenu && menuIconOpen && menuIconClose) {
+                menuButton.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                    menuIconOpen.classList.toggle('hidden');
+                    menuIconClose.classList.toggle('hidden');
+                });
+
+                // Close menu when a link inside it is clicked
+                mobileMenu.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        mobileMenu.classList.add('hidden');
+                        menuIconOpen.classList.remove('hidden');
+                        menuIconClose.classList.add('hidden');
+                    });
+                });
+            } else {
+                console.error("Mobile menu elements not found. Menu will not work.");
+            }
+
+            // --- 2. Intersection Observer for On-Scroll Fade-In Animations ---
             const observerOptions = {
                 root: null,
                 rootMargin: '0px',
@@ -994,40 +1020,14 @@
             document.querySelectorAll('.anim-fade-in').forEach(element => {
                 observer.observe(element);
             });
-
-            // Initialize Lucide Icons
-            lucide.createIcons();
             
-            // --- NEW: Mobile Menu Toggle Logic ---
-            const menuButton = document.getElementById('menu-button');
-            const mobileMenu = document.getElementById('mobile-menu');
-            const menuIconOpen = document.getElementById('menu-icon-open');
-            const menuIconClose = document.getElementById('menu-icon-close');
-            
-            if (menuButton && mobileMenu && menuIconOpen && menuIconClose) {
-                menuButton.addEventListener('click', () => {
-                    mobileMenu.classList.toggle('hidden');
-                    menuIconOpen.classList.toggle('hidden');
-                    menuIconClose.classList.toggle('hidden');
-                });
-
-                // Close menu when a link inside it is clicked
-                mobileMenu.querySelectorAll('a').forEach(link => {
-                    link.addEventListener('click', () => {
-                        mobileMenu.classList.add('hidden');
-                        menuIconOpen.classList.remove('hidden');
-                        menuIconClose.classList.add('hidden');
-                    });
-                });
-            }
-
-            // --- Portfolio/Resume Toggle Logic ---
+            // --- 3. Portfolio/Resume Toggle Logic ---
             const portfolioView = document.getElementById('portfolio-view');
             const resumeView = document.getElementById('resume-view');
             const showResumeBtn = document.getElementById('show-resume-btn');
             const backToPortfolioBtn = document.getElementById('back-to-portfolio-btn');
             
-            // --- PNG Download Logic ---
+            // --- 4. PNG Download Logic ---
             const downloadPngBtn = document.getElementById('download-png-btn');
             const resumePageContent = document.getElementById('resume-page-content');
 
@@ -1063,16 +1063,12 @@
                     html2canvas(page, {
                         scale: 3, // Increase scale for better quality
                         useCORS: true,
-                        // Ensure it captures the full height, even if off-screen
                         windowHeight: page_height, 
                         scrollY: 0 
                     }).then(canvas => {
-                        // Create a link to download the canvas as a PNG
                         const link = document.createElement('a');
                         link.href = canvas.toDataURL('image/png');
                         link.download = 'Tirth_Panawala_CV.png';
-                        
-                        // Append to body, click, and remove
                         document.body.appendChild(link);
                         link.click();
                         document.body.removeChild(link);
@@ -1091,6 +1087,14 @@
 
             } else {
                 console.error("Error: Could not find all necessary elements for resume toggle.");
+            }
+
+            // --- 5. Initialize Lucide Icons (RUN LAST) ---
+            // This way, if it fails, it doesn't break the menu or resume buttons.
+            try {
+                lucide.createIcons();
+            } catch (e) {
+                console.error("Lucide icons failed to render, but site should still be functional.", e);
             }
         });
     </script>
